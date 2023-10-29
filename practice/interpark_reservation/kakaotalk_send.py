@@ -7,8 +7,6 @@ url = 'https://kauth.kakao.com/oauth/token'
 rest_api_key = ''
 redirect_uri = 'https://example.com/oauth'
 authorize_code = ''  # 카톡 인증용 코드 수행시마다 재발급 필요
-# 코드 얻기 : https://kauth.kakao.com/oauth/authorize?client_id=0cfe987d862f4fffd91d640415b60642&redirect_uri=https://example.com/oauth&response_type=code&scope=talk_message,friends
-
 
 tokens = ''
 friend_id = ''
