@@ -1,0 +1,79 @@
+// Title of the chart to send to Slack as it appears in GSheet
+const chartTitle = 'Profit_Table';
+
+// prd
+const slackBotToken = '';
+const slackChannels = '';
+
+function sendChartToSlack() {
+  // 'result' 시트를 직접 가져옵니다.
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('result');
+
+  // 첫 번째 차트를 가져옵니다.
+  const chart = sheet.getCharts()[0];
+  if (!chart) {
+    throw new Error(`Cannot find the first chart in the 'result' sheet.`);
+  }
+
+  // 생성한 차트를 슬랙 파일에 업로드
+  const options = {
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${slackBotToken}`,
+    },
+    payload: {
+      title: chartTitle,
+      filetype: 'png',
+      file: chart.getAs('image/png'),
+      channels: slackChannels,
+    },
+    muteHttpExceptions: true,
+  };
+  const response = UrlFetchApp.fetch('https://slack.com/api/files.upload', options);
+  if (response.getResponseCode() !== 200) {
+    throw new Error(`Error uploading Google Sheets image to Slack: HTTP ${response.getResponseCode()}: ${response.getContentText()}`);
+  }
+  const body = JSON.parse(response.getContentText());
+  if (!body.ok) {
+    throw new Error(`Error uploading Google Sheets image to Slack: ${body.error}`);
+  }
+}
+
+// 차트 생성
+function MakeChart() {
+  try { 
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = SpreadsheetApp.setActiveSheet(ss.getSheetByName('result'));
+
+    var range = sheet.getRange("A1:C15");
+    var chts = sheet.getCharts();
+    for(var i=0; i<chts.length; i++){
+      sheet.removeChart(chts[i]);
+    }
+    var chart = sheet.newChart()
+        .setChartType(Charts.ChartType.TABLE)
+        .addRange(range)
+        .setNumHeaders(1)
+        .setPosition(5, 5, 0, 0)
+        .setOption('title', 'Profit_Table')
+        .setOption('height', 520)
+        .setOption('width', 850)
+        .build();
+
+    sheet.insertChart(chart);
+    console.log("[+] 성공!");
+    Utilities.sleep(5000); // 5초 대기
+    sendChartToSlack();
+  }      
+  catch(e){
+    console.log("[+] 실패! (" + e + ")");
+  }
+}
+
+// 트리거 생성
+function setTrigger() { 
+  const time = new Date(); 
+  time.setHours(17); 
+  time.setMinutes(00); 
+  ScriptApp.newTrigger('MakeChart').timeBased().at(time).create(); 
+}
