@@ -149,7 +149,7 @@ app.openapi = custom_openapi
                 },
             },
         })
-def read_otp_otpcode(user_id: str, pw: str = "medium@1234", env: str = "stg"):
+def read_otp_otpcode(user_id: str, pw: str = "", env: str = "stg"): 
         result = swagger_func.check_user_account(user_id, env)
         if result['result']:
             result = swagger_func.check_user_secretkey(user_id,result['address'],env)
@@ -203,9 +203,9 @@ def update_otp_account(user_id: str, user_pw: str, qa_pw: str):
                     "content": {
                         "application/json": {
                             "example": {"result": "true", 
-                                        "userID": "sqe0a100",
-                                        "secretkey": "abcd1234",
-                                        "new_secretkey": "qwer1234"}
+                                        "userID": "",
+                                        "secretkey": "",
+                                        "new_secretkey": ""}
                                         }
                         }
                     },
@@ -262,13 +262,13 @@ def read_otp_qrcode(user_id: str, secret_key: str):
                 "content": {
                     "application/json": {
                         "example": {"userID": "sqe0a100",
-                                    "url": "https://launchpad.stg.kstadium.io/?accessKey=3bdc1c2becc4b516ca09b967c308bca12ddce3d7f941eecc1df6ecbb1043f921"
+                                    "url": ""
                                     }
                                     }
                     }
                 },
              })
-def read_launchPad_accessurl(user_id: str, pw: str = "medium@1234", env: str = "stg"):
+def read_launchPad_accessurl(user_id: str, pw: str = "", env: str = "stg"):
         result = {}
         result_temp = swagger_func.check_user_account(user_id, env)
         result['userID'] = user_id
@@ -291,15 +291,15 @@ def read_launchPad_accessurl(user_id: str, pw: str = "medium@1234", env: str = "
                 "description": "Create Access Token for DEX",
                 "content": {
                     "application/json": {
-                        "example": {"userID": "sqe0a100",
-                                    "address": "0x6cD83Fa1249beF9f2E19308Fca45F452df2b2CeB",
-                                    "DEX accessToken": "eyJzdWIiOiJsbG95ZDEwMCIsImluZm8iOnsidXNlcklkIjoibGxveWQxMDAiLCJuYW1lIjoibGxveWQiLCJhY2NvdW50IjoiMHg2Y0Q4M0ZhMTI0OWJlRjlmMkUxOTMwOEZjYTQ1RjQ1MmJmMmIyQ2VCIiwic3ltYm9sIjoiS1NUQSIsImVtYWlsIjoibGxveWQxMDBAeW9wbWFpbC5jb20iLCJsb2dpblRpbWUiOjB9LCJyb2xlcyI6IlJPTEVfREVYIiwiaWF0IjoxNjgxODkxMjE4LCJleHAiOjE2ODE4OTIxMTh9"
+                        "example": {"userID": "",
+                                    "address": "",
+                                    "DEX accessToken": ""
                                     }
                                     }
                     }
                 },
              })
-def read_dex_accesstoken(user_id: str, pw: str = "medium@1234", env: str = "stg"):
+def read_dex_accesstoken(user_id: str, pw: str = "", env: str = "stg"):
         result = {}
         result_temp = swagger_func.check_user_account(user_id, env)
         result['userID'] = user_id
@@ -322,13 +322,13 @@ def read_dex_accesstoken(user_id: str, pw: str = "medium@1234", env: str = "stg"
                 "content": {
                     "application/json": {
                         "example": {"userID": "sqe0a100",
-                                    "url": "https://stg.atheneswap.io/?accessKey=3bdc1c2becc4b516ca09b967c308bca12ddce3d7f941eecc1df6ecbb1043f921"
+                                    "url": ""
                                     }
                                     }
                     }
                 },
              })
-def read_dex_accessurl(user_id: str, pw: str = "medium@1234", env: str = "stg"):
+def read_dex_accessurl(user_id: str, pw: str = "", env: str = "stg"):
         result = {}
         result_temp = swagger_func.check_user_account(user_id, env)
         result['userID'] = user_id
@@ -526,7 +526,7 @@ def get_remove_liquidity_estimate(env:str, id:str, pw:str, tokenA: str = Query(.
     return result
 
 @app.get("/DEX/get/Pair/info", summary="Farm의 APR, Total Staked, LP USD 정보 조회", 
-        description="Tokenomics 시트 참조 (total_alloc_point, alloc_point, regularRewardperBlock)  \n Tokenomics 폴더 : https://drive.google.com/drive/u/2/folders/1RiUrKOJNRGwKgcW2SeOzf0GgAkDCRNdX" , tags=['DEX'],
+        description="Tokenomics 시트 참조 (total_alloc_point, alloc_point, regularRewardperBlock)  \n Tokenomics 폴더 : " , tags=['DEX'],
         responses={
             200: {
                 "description": "Farm의 APR, Total Staked, LP USD 정보 조회",
@@ -629,7 +629,7 @@ def get_total_staked(env:str
 
 @app.get("/DEX/get/Single/apr", summary="Single Pool의 APR 계산", 
         description="Tokenomics 시트 참조 (total_alloc_point, alloc_point, regularRewardperBlock)  \n" + 
-                    "Tokenomics 폴더 : https://drive.google.com/drive/u/2/folders/1RiUrKOJNRGwKgcW2SeOzf0GgAkDCRNdX  \n"+"\n"+
+                    "Tokenomics 폴더 :   \n"+"\n"+
                     "[계산식]  \n"+
                     # yearReward : louiPerblock * (60/comm.BLOCK_TIME_MAP[env.CurrentStage])6024*365
                     # poolWeight : allocPoint / totalSpecialAllocPoint
@@ -690,7 +690,7 @@ def get_pairInfo(env:str,
                                 "Result": "Success",
                                 "message": "Transaction Success",
                                 "data": {"Pool" : "KSTA-LOUI",
-                                        "txHash" : "0x1af24684a286f3g14gasgargh9m",
+                                        "txHash" : "",
                                         "before" : {"reserve" : {"tokenA" : "123.456",
                                                                 "tokenB" : "32.181"},
                                                     "balance" : {"tokenA" : "123.456",
@@ -762,7 +762,7 @@ def get_token_price(
                 "content": {
                     "application/json": {
                         "example": {"result": "true",
-                                    "user_id": "sqe0a100",
+                                    "user_id": "",
                                     "resultMessage": "사용자 계정 생성 완료"
                                     }
                                     }
@@ -835,7 +835,7 @@ def get_account_user_info(
                 "content": {
                     "application/json": {
                         "example": {"result": "true", 
-                                    "accesstoken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlcmFkbWluIiwiaW5mbyI6eyJ1c2VySWQiOiJzdXBlcmFkbWluIiwibmFtZSI6InN1cGVyYWRtaW4iLCJhY2NvdW50IjoiU1VQRVIiLCJzeW1ib2wiOm51bGwsImVtYWlsIjpudWxsLCJsb2dpblRpbWUiOjE2OTcwODU3NDIwNDl9LCJyb2xlcyI6IlJPTEVfU1VQRVIiLCJpYXQiOjE2OTcwODU3NDIsImV4cCI6MTY5NzA4OTM0Mn0.uWAoGWTfZ91y-dF37A0K6-xJ7m90E7p636xY1wvx8Zs"
+                                    "accesstoken": ""
                                     }
                     }
                 },
@@ -897,7 +897,7 @@ def send_ksta(user_id: str, qa_pw: str, amount: float=1000):
                             "example": {
                                 "message": "Transaction Success",
                                 "result": OrderedDict([
-                                        ("TxHash", "0xc7d4482fdf6541263ee52f6d0b8eff70245a321ffeabd7547905c2833d365ae1"),
+                                        ("TxHash", ""),
                                         ("Before_CommunityPool_Balance", "1234 KSTA"),
                                         ("Before_KSTA_Balance", "1234 KSTA"),
                                         ("Before_SOP_Balance", "1234 SOP"),
@@ -947,7 +947,7 @@ def send_community_pool(env: str, user_id: str, qa_pw: str, amount:float):
                             "example": {
                                 "message": "Transaction Success",
                                 "result": OrderedDict([                                        
-                                        ("TxHash", "0xc7d4482fdf6541263ee52f6d0b8eff70245a321ffeabd7547905c2833d365ae1"),
+                                        ("TxHash", ""),
                                         ("Before_KSTA_Balance", "1234 KSTA"),
                                         ("Before_NST_Balance", "1234 NST"),                                        
                                         ("After_KSTA_Balance", "1234 KSTA"),
@@ -994,8 +994,8 @@ def send_token(env: str,tokensymbol: str, user_id: str, to_address: str, amount:
                             "example": {
                                 "message": "Transaction Success",
                                 "result": OrderedDict([            
-                                        ("Approve_TxHash", "0xc7d4482fdf6541263ee52f6d0b8eff70245a321ffeabd7547905c2833d365ae1"),                            
-                                        ("Transaction_TxHash", "0xc7d4482fdf6541263ee52f6d0b8eff70245a321ffeabd7547905c2833d365ae1"),
+                                        ("Approve_TxHash", ""),                            
+                                        ("Transaction_TxHash", ""),
                                         ("Before_KSTA_Balance", "1234 KSTA"),
                                         ("Before_SOP_Balance", "1234 SOP"),                                        
                                         ("Before_1_SO_DelegateAmount", "1234 SOP"),            
@@ -1016,7 +1016,6 @@ def send_delegate(env:str, user_id: str, so_number: str, amount:float, qa_pw: st
         if qa_pw == qapw:
             message, value = swagger_func.send_delegate(env, user_id, so_number, amount)
             result['result'] = message
-            # result = [approve_txHash, txHash, before_ksta, before_sop, before_delegate_amount, after_ksta, after_sop, after_delegate_amount]
             try:                
                 result_message['Approve_TxHash'] = value[0]                
                 result_message['Transaction_TxHash'] = value[1]                
@@ -1051,7 +1050,7 @@ def send_delegate(env:str, user_id: str, so_number: str, amount:float, qa_pw: st
                                     "4(SoId)": 
                                     OrderedDict([            
                                         ("undelegate_amount", 12.1242232),                            
-                                        ("txHash", "0xc7d4482fdf6541263ee52f6d0b8eff70245a321ffeabd7547905c2833d365ae1"),
+                                        ("txHash", ""),
                                         ("delegate_amount", 0),
                                         ("claim", 0)
                                     ])
@@ -1094,7 +1093,7 @@ def send_undelegate(env:str, id:str, password:str, qa_pw:str, so_id:str = Query(
                                 "data" : {'1': OrderedDict([            
                                         ("balance", 631.9508795015548),                            
                                         ("transaction_result", "success"),
-                                        ("txHash", "0xee882a8736b470b0fa61df280f5b00a7b01c78d957efe275c6af80fe81ab1e2b")
+                                        ("txHash", "")
                                     ])
                                     }
                                     }
@@ -1144,7 +1143,7 @@ if "LAMBDA_RUNTIME_DIR" not in os.environ:
                             "example": {
                                 "Network": "stg",
                                 "Block": "34028108",
-                                "Address": "0xBc43e890A0cb0b3Bce2251E7d649E846BcC201b4",
+                                "Address": "",
                                 "Value": "999999.5293192"
                                 } }
                         }
@@ -1167,7 +1166,7 @@ if "LAMBDA_RUNTIME_DIR" not in os.environ:
                                 "Network": "stg",
                                 "Token" : "NST",
                                 "Block": "34028108",
-                                "Address": "0xBc43e890A0cb0b3Bce2251E7d649E846BcC201b4",
+                                "Address": "",
                                 "Value": "999999.5293192"
                                 } }
                         }
@@ -1188,7 +1187,7 @@ if "LAMBDA_RUNTIME_DIR" not in os.environ:
                         "application/json": {
                             "example": {
                                 "Network": "stg",
-                                "Address": "0xBc43e890A0cb0b3Bce2251E7d649E846BcC201b4",
+                                "Address": "",
                                 "value": "[{'soId:1', 'DelegateAmount:123.123', 'ClaimAmount:111.151'}...]"
                                 } }
                         }
@@ -1215,7 +1214,7 @@ if "LAMBDA_RUNTIME_DIR" not in os.environ:
                         "application/json": {
                             "example": {
                                 "Network": "stg",
-                                "Address": "0xBc43e890A0cb0b3Bce2251E7d649E846BcC201b4",
+                                "Address": "",
                                 "value": "[{'soId:1', 'DelegateAmount:123.123', 'ClaimAmount:111.151'}...]"
                                 } }
                         }
@@ -1313,9 +1312,9 @@ def get_findBlock(env: str ="stg", date: str = Query(None, description="예) 202
                                 "result": OrderedDict([            
                                         ("update_at", "2023-07-10"),                            
                                         ("token_symbol", "KSTA"),
-                                        ("tx_hash", "0x4cc3e01d221396ce74168ec14cddfb0d5a6dcac6644b01f3c5f3819c22de2ffd"),
-                                        ("sender", "0xe4edda1485110e6dacce0c68c9b4f62e58eb0b0d"),                                        
-                                        ("receiver", "0xe4edda1485110e6dacce0c68c9b4f62e58eb0b0d"),            
+                                        ("tx_hash", ""),
+                                        ("sender", ""),                                        
+                                        ("receiver", ""),            
                                         ("block_number", "33333"),
                                         ("amount", "1234"),                                        
                                         ("before_balance", "1234"),
@@ -1570,7 +1569,7 @@ def get_repositories_tags():
                             "example": {
                                 "message": "Success",
                                 "result": OrderedDict([            
-                                        ("checkpoint", "64b95a6b83fa5faf549622dc"),
+                                        ("checkpoint", ""),
                                         ("blockNumber", "0"),                         
                                         ("createdAt", "2023-07-20T16:00:00")
                                     ])
@@ -1605,7 +1604,7 @@ def get_checkpoints(
                             "example": {
                                 "message": "Success",
                                 "result": OrderedDict([            
-                                        ("checkpoint", "64b95a6b83fa5faf549622dc"),
+                                        ("checkpoint", ""),
                                         ("blockCount", "0"),        
                                         ("blockInflation", "0"),        
                                         ("transactionCount", "0"),        
@@ -1653,8 +1652,8 @@ def get_inflations(
                                         ("sop", "0"),        
                                         ("ratio", "0"),        
                                         ("claim", "0"),     
-                                        ("contract", "0xbEB45E08155B8312eCC7CD44380a4912F0d3849D"),
-                                        ("leader", "0xbEB45E08155B8312eCC7CD44380a4912F0d3849D"),  
+                                        ("contract", ""),
+                                        ("leader", ""),  
                                         ("createdAt", "2023-07-20T16:00:00")
                                     ])
                                     }
@@ -1699,7 +1698,7 @@ def get_so_snapshots(
                                         ("soId", "1"),        
                                         ("memberId", "1"),        
                                         ("protocolId", "1"),        
-                                        ("address", "0xe68F32846F1CB1E924aB3E320028154451D68049"),        
+                                        ("address", ""),        
                                         ("sop", "0"),        
                                         ("ratio", "0"),     
                                         ("claim", "0"),                         
@@ -1859,7 +1858,7 @@ def get_som_snapshots(
                             "example": {
                                 "message": "Success",
                                 "result": OrderedDict([            
-                                        ("checkpoint", "64b95a6b83fa5faf549622dc"),
+                                        ("checkpoint", ""),
                                         ("soId", "1"),        
                                         ("reward", "0"),        
                                         ("basicReward", "0"),        
@@ -1908,11 +1907,11 @@ def get_so_rewards(
                             "example": {
                                 "message": "Success",
                                 "result": OrderedDict([            
-                                        ("checkpoint", "64b95a6b83fa5faf549622dc"),
+                                        ("checkpoint", ""),
                                         ("soId", "1"),        
                                         ("memberId", "1"),        
                                         ("protocolId", "1"),        
-                                        ("address", "0xe68F32846F1CB1E924aB3E320028154451D68049"),        
+                                        ("address", ""),        
                                         ("reward", "0"),                             
                                         ("createdAt", "2023-07-20T16:00:00")
                                     ])
@@ -2495,7 +2494,7 @@ def flux_url(
     env: str = Query('stg', description="실행 환경"),
     user_id: str = Query(..., description="조회할 user_id 입력"),
     ):
-    password ='medium@1234'
+    password =''
     result = {}
     data = swagger_func.flux_url(user_id,password,env)
     
