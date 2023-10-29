@@ -56,28 +56,28 @@ def search_chatgpt(keyword):
     
     return answer  
 
-def tstory_auth():
+def tistory_auth():
 
     # 티스토리 API 화면에서 확인 가능
-    tstory_client_id = ''
-    tstory_secret_key = ''
+    tistory_client_id = ''
+    tistory_secret_key = ''
     
     # 본인의 블로그 주소
-    tstory_redirect_uri = ''  #ex) https://deokkku.tistory.com/
+    tistory_redirect_uri = ''  #ex) https://deokkku.tistory.com/
 
     # code_url에서 인증을 통해 code 확인
-    code_url = "https://www.tistory.com/oauth/authorize?client_id={}&redirect_uri={}&response_type=code".format(tstory_client_id,tstory_redirect_uri)
+    code_url = "https://www.tistory.com/oauth/authorize?client_id={}&redirect_uri={}&response_type=code".format(tistory_client_id,tistory_redirect_uri)
     print(code_url)
 
     # code_url에서을 통해 얻은 코드값 입력
     code = ''
 
     # code 값을 통해 access_toke_url에 접속해 access_token 확인
-    access_toke_url = "https://www.tistory.com/oauth/access_token?client_id={}&client_secret={}&redirect_uri={}&code={}&grant_type=authorization_code".format(tstory_client_id,tstory_secret_key,tstory_redirect_uri, code)
+    access_toke_url = "https://www.tistory.com/oauth/access_token?client_id={}&client_secret={}&redirect_uri={}&code={}&grant_type=authorization_code".format(tistory_client_id,tistory_secret_key,tistory_redirect_uri, code)
     
     print(access_toke_url)
 
-def tstory_category():
+def tistory_category():
 
     blogName = "" #ex) deokkku
 
@@ -85,7 +85,7 @@ def tstory_category():
         url = "https://www.tistory.com/apis/category/list"
 
         params = {
-            'access_token': tstory_access_token,
+            'access_token': tistory_access_token,
             'output': 'json', # json, xml 두 가지 형식 지원
             'blogName': blogName   # ().tistory.com 또는 블로그 주소 전체
         }
@@ -100,14 +100,14 @@ def tstory_category():
 
         list_of_Category()
 
-def tstory_write(title_, content_, hashtag_):
+def tistory_write(title_, content_, hashtag_):
     # API 엔드포인트 설정
     
     # 티스토리 API endpoiont -> 수정하지 않아도 됨.
     endpoint = 'https://www.tistory.com/apis/post/write'
 
     # 카테고리 변수 생성 및 ID 입력
-    # 카테고리는 tstory_category 함수 실행하면 확인할 수 있음.
+    # 카테고리는 tistory_category 함수 실행하면 확인할 수 있음.
     shopping = 1164161 # 예시임. 본인의 블로그에서 카테고리 ID를 찾아야함.
 
     # 요청 매개변수 설정
@@ -116,7 +116,7 @@ def tstory_write(title_, content_, hashtag_):
     title = title_ # 제목
     content = content_ # 내용
     visibility = 2  # 0: 비공개, 1: 보호, 2: 발행
-    category_id = shopping  # 카테고리 ID -> tstory_category 함수에서 확인 가능
+    category_id = shopping  # 카테고리 ID -> tistory_category 함수에서 확인 가능
     published = 'false'  # 공개 예약 여부
     slogan = '' # 글 슬로건
     tag = hashtag_ # 태그 (선택 사항)
@@ -125,7 +125,7 @@ def tstory_write(title_, content_, hashtag_):
 
     # 글 작성 요청
     params = {
-        'access_token': tstory_access_token,
+        'access_token': tistory_access_token,
         'output': output_type,
         'blogName': blog_name,
         'title': title, 
@@ -158,11 +158,11 @@ def format_content(content):
 
 ########################################### 실행 ###########################################
 
-# tstory access_token
+# tistory access_token
 # 토큰 얻는 방법은 'https://news.mkttalk.com/entry/tistory-api-access-token-generator' 참조
 # 토큰은 한달 동안 유지됨.
-# 최초 1회는 위 블로그에서 전달 받고, 이후에는 tstory_auth 실행해서 확인하면 됨.
-tstory_access_token = ''
+# 최초 1회는 위 블로그에서 전달 받고, 이후에는 tistory_auth 실행해서 확인하면 됨.
+tistory_access_token = ''
 
 # 특정 사이트에서 키워드 검색 값 반환
 keyword = popular_keyword()
@@ -182,7 +182,7 @@ hashtags = sections[sections.index('해시태그:') + 1].strip()
 formatted_content = format_content(content)
 
 # 티스토리 글 등록
-tstory_write(title, formatted_content, hashtags)
+tistory_write(title, formatted_content, hashtags)
 
 # 티스토리 카테고리 ID 확인 함수
-# tstory_category()
+# tistory_category()
