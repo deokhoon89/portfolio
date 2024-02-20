@@ -5,7 +5,7 @@ import bs4
 import openai
 import re
 import random
-
+import time
 
 def popular_keyword():
     # 웹사이트 URL
